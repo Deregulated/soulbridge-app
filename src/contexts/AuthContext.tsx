@@ -55,13 +55,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
+  const signUpWrapper = async (email: string, password: string, userData: any) => {
+    await authService.signUp(email, password, userData);
+  };
+
+  const signInWrapper = async (email: string, password: string) => {
+    await authService.signIn(email, password);
+  };
+
+  const signOutWrapper = async () => {
+    await authService.signOut();
+  };
+
   const value = {
     user,
     profile,
     loading,
-    signUp: authService.signUp,
-    signIn: authService.signIn,
-    signOut: authService.signOut,
+    signUp: signUpWrapper,
+    signIn: signInWrapper,
+    signOut: signOutWrapper,
   };
 
   return (

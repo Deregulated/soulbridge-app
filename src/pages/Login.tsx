@@ -25,12 +25,13 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await signIn(formData.email, formData.password);
-
-    setLoading(false);
-
-    if (!error) {
+    try {
+      await signIn(formData.email, formData.password);
       navigate("/");
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,4 +107,5 @@ const Login = () => {
   );
 };
 
+export { Login };
 export default Login;

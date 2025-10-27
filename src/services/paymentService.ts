@@ -1,8 +1,5 @@
 // src/services/paymentService.ts
-import { loadStripe } from '@stripe/stripe-js';
 import { supabase } from './supabase';
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 export const paymentService = {
   async createCheckoutSession(appointmentId: string, amount: number) {
@@ -12,15 +9,9 @@ export const paymentService = {
 
     if (error) throw error;
 
-    const stripe = await stripePromise;
-    if (!stripe) throw new Error('Stripe failed to load');
-
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id
-    });
-
-    if (result.error) {
-      throw result.error;
+    // Redirect to Stripe checkout
+    if (session.url) {
+      window.location.href = session.url;
     }
   },
 

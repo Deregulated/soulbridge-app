@@ -35,20 +35,17 @@ const Register = () => {
 
     setLoading(true);
 
-    const { error } = await signUp(
-      formData.email,
-      formData.password,
-      formData.firstName,
-      formData.lastName,
-      formData.role
-    );
-
-    setLoading(false);
-
-    if (!error) {
+    try {
+      await signUp(formData.email, formData.password, {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        role: formData.role,
+      });
       navigate("/");
-    } else {
+    } catch (error: any) {
       alert(error.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 

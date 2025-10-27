@@ -1,9 +1,12 @@
 // src/pages/PsychiatristDashboard.tsx
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { appointmentService, sessionService, assessmentService } from '../services/supabase';
+import { appointmentService } from '../services/supabase';
+import { sessionService } from '../services/sessionServices';
+import { assessmentService } from '../services/assessmentService';
 import { Appointment, Session, Assessment } from '../types';
 import { Calendar, Users, FileText, Video, Bell } from 'lucide-react';
+import { CreateAssessmentModal } from '../components/assessments/CreateAssessmentModal';
 
 export const PsychiatristDashboard: React.FC = () => {
   const { user, profile } = useAuth();

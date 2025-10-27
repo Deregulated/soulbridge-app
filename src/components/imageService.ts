@@ -1,5 +1,5 @@
 // src/services/imageService.ts
-import { supabase } from './supabase';
+import { supabase } from '../services/supabase';
 
 export const imageService = {
   async uploadImage(file: File, folder: 'home' | 'about'): Promise<string> {

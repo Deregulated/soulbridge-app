@@ -1,5 +1,5 @@
 // src/services/supabase.ts
-import { Appointment } from '@/types';
+import { Appointment, User, UserRole } from '@/types';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -9,7 +9,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Auth service
 export const authService = {
-  async signUp(email: string, password: string, userData: Partial<User> & { role: UserRole }) {
+  async signUp(email: string, password: string, userData: Partial<User> & { role: UserRole }): Promise<void> {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -30,17 +30,14 @@ export const authService = {
         .from('user_roles')
         .insert([{ user_id: data.user.id, role: userData.role }]);
     }
-
-    return data;
   },
 
-  async signIn(email: string, password: string) {
-    const { data, error } = await supabase.auth.signInWithPassword({
+  async signIn(email: string, password: string): Promise<void> {
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) throw error;
-    return data;
   },
 
   async signOut() {

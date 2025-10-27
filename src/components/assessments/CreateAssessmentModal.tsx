@@ -38,6 +38,7 @@ export const CreateAssessmentModal: React.FC<CreateAssessmentModalProps> = ({ on
     onSubmit({
       title,
       questions,
+      psychiatrist_id: '', // Will be set by parent component
       client_id: '' // Will be set when assigned to a client
     });
   };
