@@ -1,11 +1,6 @@
 // src/services/supabase.ts
 import { Appointment, User, UserRole } from '@/types';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 // Auth service
 export const authService = {
@@ -72,12 +67,12 @@ export const appointmentService = {
       .from('appointments')
       .select(`
         *,
-        psychiatrists:psychiatrist_id(*)
+        psychiatrists:profiles!psychiatrist_id(*)
       `)
       .eq('client_id', clientId)
       .order('scheduled_for', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as any;
   },
 
   async getPsychiatristAppointments(psychiatristId: string) {
@@ -85,11 +80,11 @@ export const appointmentService = {
       .from('appointments')
       .select(`
         *,
-        clients:client_id(*)
+        clients:profiles!client_id(*)
       `)
       .eq('psychiatrist_id', psychiatristId)
       .order('scheduled_for', { ascending: true });
     if (error) throw error;
-    return data;
+    return data as any;
   }
 };

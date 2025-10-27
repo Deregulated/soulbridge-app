@@ -1,7 +1,8 @@
 // src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import { supabase, authService } from '../services/supabase';
+import { supabase } from '@/integrations/supabase/client';
+import { authService } from '../services/supabase';
 import { Profile } from '../types';
 
 interface AuthContextType {
@@ -40,10 +41,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .single();
           
         if (profileData) {
+          const userRoles = profileData.user_roles as any;
           setProfile({
             ...profileData,
-            role: profileData.user_roles[0].role
-          });
+            email: session.user.email || '',
+            role: userRoles?.[0]?.role || 'client'
+          } as Profile);
         }
       } else {
         setProfile(null);

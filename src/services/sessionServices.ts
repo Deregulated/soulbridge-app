@@ -1,5 +1,5 @@
 // src/services/sessionService.ts
-import { supabase } from './supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { Session } from '../types';
 
 export const sessionService = {
@@ -9,14 +9,14 @@ export const sessionService = {
       .insert([{
         appointment_id: appointmentId,
         started_at: new Date().toISOString(),
-        status: 'live',
+        status: 'live' as const,
         room_id: `room-${appointmentId}-${Date.now()}`
       }])
       .select()
       .single();
     
     if (error) throw error;
-    return data;
+    return data as any;
   },
 
   async endSession(sessionId: string): Promise<Session> {
@@ -24,14 +24,14 @@ export const sessionService = {
       .from('sessions')
       .update({
         ended_at: new Date().toISOString(),
-        status: 'ended'
+        status: 'ended' as const
       })
       .eq('id', sessionId)
       .select()
       .single();
     
     if (error) throw error;
-    return data;
+    return data as any;
   },
 
   async getActiveSessions(psychiatristId: string): Promise<Session[]> {
@@ -47,7 +47,7 @@ export const sessionService = {
       .eq('status', 'live');
     
     if (error) throw error;
-    return data;
+    return data as any;
   },
 
   async notifySessionStart(appointmentId: string): Promise<void> {

@@ -1,5 +1,5 @@
 // src/services/paymentService.ts
-import { supabase } from './supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export const paymentService = {
   async createCheckoutSession(appointmentId: string, amount: number) {

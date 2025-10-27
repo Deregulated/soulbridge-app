@@ -14,6 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          payment_status: string | null
+          psychiatrist_id: string
+          scheduled_for: string
+          session_type: string
+          status: string
+          stripe_session_id: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          psychiatrist_id: string
+          scheduled_for: string
+          session_type?: string
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          payment_status?: string | null
+          psychiatrist_id?: string
+          scheduled_for?: string
+          session_type?: string
+          status?: string
+          stripe_session_id?: string | null
+        }
+        Relationships: []
+      }
+      assessment_responses: {
+        Row: {
+          answers: Json
+          assessment_id: string
+          client_id: string
+          id: string
+          submitted_at: string
+        }
+        Insert: {
+          answers: Json
+          assessment_id: string
+          client_id: string
+          id?: string
+          submitted_at?: string
+        }
+        Update: {
+          answers?: Json
+          assessment_id?: string
+          client_id?: string
+          id?: string
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assessment_responses_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "assessments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      assessments: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          psychiatrist_id: string
+          questions: Json
+          title: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          psychiatrist_id: string
+          questions: Json
+          title: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          psychiatrist_id?: string
+          questions?: Json
+          title?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          metadata: Json | null
+          read: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          metadata?: Json | null
+          read?: boolean | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          metadata?: Json | null
+          read?: boolean | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -46,6 +177,44 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      sessions: {
+        Row: {
+          appointment_id: string
+          created_at: string
+          ended_at: string | null
+          id: string
+          room_id: string | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          appointment_id: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          room_id?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          appointment_id?: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          room_id?: string | null
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sessions_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
