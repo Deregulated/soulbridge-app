@@ -12,6 +12,7 @@ import { PsychiatristDashboard } from './pages/PsychiatristDashboard';
 import { Booking } from './pages/Booking';
 import { PaymentSuccess } from './pages/PaymentSuccess';
 import About from './pages/About';
+import Services from './pages/Services';
 import NotFound from './pages/NotFound';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
@@ -31,6 +32,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
         <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <Signup />} />
         <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
