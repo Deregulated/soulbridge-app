@@ -1,36 +1,62 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import NotFound from "./pages/NotFound";
+// src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AccessibilityPanel } from './components/AccessibilityPanel';
+import { Chatbot } from './components/Chatbot';
+import { Landing } from './pages/Landing';
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+import { ClientDashboard } from './pages/ClientDashboard';
+import { PsychiatristDashboard } from './pages/PsychiatristDashboard';
+import { Booking } from './pages/Booking';
+import { PaymentSuccess } from './pages/PaymentSuccess';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
-const queryClient = new QueryClient();
+function AppRoutes() {
+  const { user, profile, loading } = useAuth();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
+        <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
+        <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <Signup />} />
+        <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+        <Route path="/payment/success" element={<PaymentSuccess />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              {profile?.role === 'client' ? <ClientDashboard /> : <PsychiatristDashboard />}
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      
+      {/* Global Components */}
+      <AccessibilityPanel />
+      <Chatbot />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </Router>
+  );
+}
 
 export default App;
