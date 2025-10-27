@@ -11,6 +11,8 @@ import { ClientDashboard } from './pages/ClientDashboard';
 import { PsychiatristDashboard } from './pages/PsychiatristDashboard';
 import { Booking } from './pages/Booking';
 import { PaymentSuccess } from './pages/PaymentSuccess';
+import About from './pages/About';
+import NotFound from './pages/NotFound';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 function AppRoutes() {
@@ -28,6 +30,7 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <Signup />} />
         <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
@@ -40,6 +43,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       
       {/* Global Components */}
