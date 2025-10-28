@@ -13,6 +13,7 @@ import { Booking } from './pages/Booking';
 import { PaymentSuccess } from './pages/PaymentSuccess';
 import About from './pages/About';
 import Services from './pages/Services';
+import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/signup" element={user ? <Navigate to="/dashboard" /> : <Signup />} />
         <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
